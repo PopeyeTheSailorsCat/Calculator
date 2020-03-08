@@ -35,7 +35,7 @@ stack* stack1 = NULL;
 stack* stack2 = NULL;
 _Bool minorError = 0;
 _Bool fatalError = 0;
-void ErrorHapened(int errorNumber) { //Обработка всех ошибок со всех мест программы
+void ErrorHapened(int errorNumber) { //Handling all errors from all places in the program
   if (minorError == 1) {
     return;
   }
@@ -44,19 +44,19 @@ void ErrorHapened(int errorNumber) { //Обработка всех ошибок со всех мест програ
   case -1:
     printf("ERROR: not enough memory");
     break;
-  case 0://если при чтении аргументов с консоли что то пошло не так
+  case 0://if something went wrong when reading arguments from the console
     printf("ERROR: problem with arguments\n");
     break;
-  case 1: //Везде
+  case 1: //Everywhere
     printf(" == ERROR: Not enough memory\n");
     break;
-  case 2: //В сканере
+  case 2: //Into the scanner
     printf(" == ERROR: Unrecognized character\n");
     break;
-  case 3: // в определителе команд
+  case 3: // in the command qualifier
     printf(" == ERROR: Unrecogized command\n");
     break;
-  case 4://любые ошибки со скобками в парсере
+  case 4://any errors with parentheses in the parser
     printf(" == ERROR: brackets\n");
     break;
   case 5://В evale
@@ -191,7 +191,7 @@ void deleteStack(stack **head) {
   }
   _free_dbg(*head, _CLIENT_BLOCK);
 }
-int ChechSymbol(char s, char second) {//Проверяем не закончилась ли строка, пока мы читаем
+int ChechSymbol(char s, char second) {//We check whether the line has not ended while we are reading
   if (s == '\0' && second =='y') {
     ErrorHapened(2);
     return 0;
@@ -205,16 +205,16 @@ int ChechSymbol(char s, char second) {//Проверяем не закончилась ли строка, пока
 queue *PopBack(queue **head) {
   queue* lastbn = NULL;
   queue* Tok = NULL;
-  //Получили NUL
+  //get NULL
   if (!head) {
     return NULL;
   }
-  //Список пуст
+  //The list is empty
   if (!(*head)) {
     return NULL;
   }
   lastbn = GetLastButOne(*head);
-  //Если в списке один элемент
+  //If there is one item in the list
   if (lastbn== NULL) {
     Tok = *head;
     *head = NULL;
@@ -225,7 +225,7 @@ queue *PopBack(queue **head) {
   }
   return Tok;
 }
-char FunctRecogn(char*s, char **here) {//Посимвольный разбор функций //@ - sin// s-sqrt// c-cos// r - ctg //t-tg
+char FunctRecogn(char*s, char **here) {//Character-by-character analysis of functions //@ - sin// s-sqrt// c-cos// r - ctg //t-tg
   char str[10];                         // f-floor// o-ceil // j arcsin// k arccos// i arctg
   switch (*s){
   case 'a':
@@ -393,7 +393,7 @@ char FunctRecogn(char*s, char **here) {//Посимвольный разбор функций //@ - sin//
         //error
       }
       break;
-    case 'q': //опасное место проверка?
+    case 'q': //a dangerous place to be checking?
       s++;
       if (!ChechSymbol(*s, 'n')) {
         return 'q';
@@ -422,18 +422,18 @@ char FunctRecogn(char*s, char **here) {//Посимвольный разбор функций //@ - sin//
     }
   }
   return 'q';
-}//посимвольный разбор функций
-void PrintBuffer(char *str, int count) {//Проверочная функция
+}//character-by-character analysis of functions
+void PrintBuffer(char *str, int count) {//Verification function
   for (int i = 0; i < count; i++) {
     printf("%c", str[i]);
   }
   return;
 }
-int Scan(queue **q, char *s, int len) {//Читаем полученную строку
+int Scan(queue **q, char *s, int len) {//Read the resulting line
   queue elem;
   queue *Tok = &elem;
 //  queue *prev = NULL;
-  _Bool textBefore= 0; //для строк комментариев
+  _Bool textBefore= 0; //for comment lines
   char *here=NULL;
   int count = 0;
   while (minorError !=1 && count<len) { 
@@ -477,11 +477,11 @@ int Scan(queue **q, char *s, int len) {//Читаем полученную строку
       textBefore = 1;
       break;
     case '/':
-      //проверка на комментарий
+      //checking for comments
       s++;
       if (*s == '/') {
         if (textBefore != 1) {
-          minorError = 1;//позволит просто вывести строку
+          minorError = 1;//allows you to simply output a string
           printf("\n");
         }
         else {
@@ -558,7 +558,7 @@ int Scan(queue **q, char *s, int len) {//Читаем полученную строку
             //Put(q, prev->T);
             //_free_dbg(prev, _CLIENT_BLOCK);
             Tok->T.id = Token_operator;
-            Tok->T.operator = 'w'; //сверхумножение
+            Tok->T.operator = 'w'; //over- multiplication
             Put(q, Tok->T);
             Tok->T.id = Token_number;
             Tok->T.Num = 10;
@@ -586,7 +586,7 @@ int Scan(queue **q, char *s, int len) {//Читаем полученную строку
             //Put(q, prev->T);
             //_free_dbg(prev, _CLIENT_BLOCK);
             Tok->T.id = Token_operator;
-            Tok->T.operator = 'w'; //сверхумножение
+            Tok->T.operator = 'w'; //over- multiplication
             Put(q, Tok->T);
             Tok->T.id = Token_number;
             Tok->T.Num = 10;
@@ -636,7 +636,7 @@ int Scan(queue **q, char *s, int len) {//Читаем полученную строку
             //Put(q, prev->T);
             //_free_dbg(prev, _CLIENT_BLOCK);
             Tok->T.id = Token_operator;
-            Tok->T.operator = 'w'; //сверхумножение
+            Tok->T.operator = 'w'; //over- multiplication
             Put(q, Tok->T);
             Tok->T.id = Token_number;
             Tok->T.Num = 10;
@@ -665,7 +665,7 @@ int Scan(queue **q, char *s, int len) {//Читаем полученную строку
             //Put(q, prev->T);
             //_free_dbg(prev, _CLIENT_BLOCK);
             Tok->T.id = Token_operator;
-            Tok->T.operator = 'w'; //сверхумножение
+            Tok->T.operator = 'w'; //over- multiplication
             Put(q, Tok->T);
             Tok->T.id = Token_number;
             Tok->T.Num = 10;
@@ -765,7 +765,7 @@ int Scan(queue **q, char *s, int len) {//Читаем полученную строку
   return 1;
 }
 
-double Eval(queue *q) {  //Выполение прочитанных операций
+double Eval(queue *q) {  //Performing read operations
   queue *st= NULL;  //queue = стэк
   queue* Tok= NULL;
   queue* First = NULL;
@@ -862,11 +862,11 @@ double Eval(queue *q) {  //Выполение прочитанных операций
           First->T.Num = atan(First->T.Num);
        // }
         break;
-      default://меняем местами, чтобы работало не с унарными функциями
+      default://we change places so that it does not work with shock functions
         Second = First;//Pop(&st);
         First = Pop(&st);
       }
-      if (First == NULL || First->T.id==Token_operator) {//Second заведомо не null, тк уже проверяли
+      if (First == NULL || First->T.id==Token_operator) {//Second obviously not null, TK already checked
         ErrorHapened(5);
         if (First != NULL) {
           _free_dbg(First, _CLIENT_BLOCK);
@@ -903,7 +903,7 @@ double Eval(queue *q) {  //Выполение прочитанных операций
         First->T.Num *= Second->T.Num;
         break;
       case '^':
-        //ERROR if  под корнем у нас 0 когда степень отрицательная
+        //ERROR if  under the root we have 0 when the degree is negative
         if (Second->T.Num <0 && fabs(First->T.Num) <= eps){
           ErrorHapened(6);
         }
@@ -914,7 +914,7 @@ double Eval(queue *q) {  //Выполение прочитанных операций
           First->T.Num = pow(First->T.Num, Second->T.Num);
         }
         break;
-      case 'x'://положительная научная
+      case 'x'://positive scientific
         if (fmod(Second->T.Num,1)!=0) {
           ErrorHapened(2);
           break;
@@ -924,7 +924,7 @@ double Eval(queue *q) {  //Выполение прочитанных операций
           break;
         }
         break;
-      case 'v': //отрицательная научная
+      case 'v': //negative scientific
         if (fmod(Second->T.Num,1)!=0) {
           ErrorHapened(2);
           break;
@@ -938,8 +938,8 @@ double Eval(queue *q) {  //Выполение прочитанных операций
         break;
         
       }
-      Push(&st, First->T); //результат обратно в стек
-      if (First != Second) {//проверяем, чтобы не чистить дважды одно и то же
+      Push(&st, First->T); //the result is back on the stack
+      if (First != Second) {//check not to clean the same thing twice
         _free_dbg(First, _CLIENT_BLOCK);
         _free_dbg(Second, _CLIENT_BLOCK);
       }
@@ -951,7 +951,7 @@ double Eval(queue *q) {  //Выполение прочитанных операций
     Tok = Pop(&q);
   }
   //_free_dbg(Tok, _CLIENT_BLOCK);
-  if (minorError == 1) {//если где то в цикле произошла ошибка, чиститим все что использовали
+  if (minorError == 1) {//  if an error occurred somewhere in the loop , we clean everything that we used
     deleteQueue(&q);
     deleteQueue(&st);
     if (Tok) {
@@ -974,7 +974,7 @@ double Eval(queue *q) {  //Выполение прочитанных операций
   }
   return 0;
 }
-int GetPrior(char op) {//Приоритеты операций
+int GetPrior(char op) {//Priorities of operations
   switch (op){
   case '(':
     return 0;
@@ -1226,7 +1226,7 @@ int main(int argc, char *argv[]) {
      // _CrtDumpMemoryLeaks();
       stri = _malloc_dbg(1*sizeof(char), _NORMAL_BLOCK, NULL, 0);
       //stri[0] = '\0';
-      minorError = 0;//просмотреть тут ли это должно быть, могут быть ошибки
+      minorError = 0;
     }
     else {
       if (stri) {
